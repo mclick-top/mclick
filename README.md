@@ -1,5 +1,5 @@
 <p align="center">
-	<img alt="logo" src="https://oscimg.oschina.net/oscnet/up-dd77653d7c9f197dd9d93684f3c8dcfbab6.png">
+	<img alt="logo" src="https://web.mclick.top/static/picture/logo.png" style="width: 64px;height: 64px">
 </p>
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">Mclick</h1>
 <h4 align="center">基于SpringBoot开发针对号码流量轮询的海外SCRM系统</h4>
@@ -14,7 +14,7 @@
 - test/123456  
 - 陆陆续续收到一些打赏，为了更好的体验已用于演示服务器升级。谢谢各位小伙伴。
 
-演示地址：http://mclick.top  
+演示地址：https://mclick.top
 文档地址：https://easal.gitbook.io/doc.mclick.top
 
 ## 演示图
