@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- saved from url=(0036)https://preview.colorlib.com/#ashion -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<!-- Meta -->
+
+	<title>Mclick-出海007 Template</title>
+	<meta name="keywords" content="WhatsApp分流,Telegram分流,Line分流,星河,未来,007,Langing Page">
+	<meta name="description" content="Mclick聚合全球多款主流社交APP的网站分流系统，客服软件WhatsApp/Telegram/Line/Zalo/WS等，实现工单/粉丝统计、活链短链、账号分流、精准送量等功能。建立可持续的客户关系，全方位加速企业业务增长！">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="robots" content="noindex, nofollow">
+	<!-- Css -->
+
+
+	<link href="./static/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="./static/template.css" rel="stylesheet" media="screen">
+	<link href="./static/fa.min.css" rel="stylesheet" media="screen">
+	<link href="./static/gfonts.min.css" rel="stylesheet" media="screen">
+
+
+	<script type="text/javascript" async="" src="./static/analytics.js"></script><script>if ( top !== self ) top.location.replace( self.location.href );// Hey, don't iframe my iframe!</script>
+
+</head>
+
+<body>
+
+
+<!-- Product iframe -->
+<iframe class="product-iframe" frameborder="0" border="0" src="#" style="height: 641.8px;" id="tplif"></iframe>
+
+
+
+<!-- Javascript -->
+<script src="./static/jquery.min.js"></script>
+<!--<script src="./static/products.js"></script>-->
+
+<!--<script src="./static/application.min.js"></script>-->
+
+<script>
+	$(document).ready(function() {
+		var url = getParams(window.location.href)
+		var id = url['id']
+		//线上
+		var host = "https://web.mclick.top/lp/"
+		// 本地
+		// var host = "file:///D:/code/mclick/lp/"
+
+		var href  = host + id + '/index.html'
+		console.log(href)
+		$('#tplif').attr('src', href);
+		// 获取URL参数
+	});
+	function getParams(url) {
+		const pattern = /(\w+)=(\w+)/gi;
+		const params = {};
+		url.replace(pattern, function(match, key, value) {
+			params[key] = value;
+		});
+		return params;
+	}
+
+</script>
+
+
+</body></html>
