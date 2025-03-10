@@ -35,8 +35,8 @@ Created: Colorib
 
         var name = obj[i]['name']
         // 线上
-        var host = "https://web.mclick.top/lp/" + name + "/"
-        img = host + img
+        var host = "https://web.mclick.top/lp/"
+        img = host + name + "/" + img
         var href = host + "index.html?id=" + name
 
         //本地
