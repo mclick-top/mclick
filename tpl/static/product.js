@@ -42,7 +42,6 @@ Created: Colorib
         //本地
         // img = "file:///D:/code/mclick/lp/" + name + "/" + img
         // var href = "file:///D:/code/mclick/lp/index.html?id="+name
-        console.log(obj[i]['img'])
         if (i > 1){
            var new_css = 'style="display: none"'
         }
