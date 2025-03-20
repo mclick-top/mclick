@@ -1,0 +1,196 @@
+html, body {
+    background: #ffffff;
+    margin: 8px 0px 100px 0px;
+}
+
+.you {
+    animation: twinkle1 .6s infinite alternate;
+    -moz-animation: twinkle1 .6s infinite alternate;
+    -ms-animation: twinkle1 .6s infinite alternate;
+    -webkit-animation: twinkle1 .6s infinite alternate
+}
+
+@keyframes twinkle1 {
+    0% {
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1)
+    }
+    100% {
+        -webkit-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+        -ms-transform: scale(1.1)
+    }
+}
+
+@-moz-keyframes twinkle1 {
+    0% {
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1)
+    }
+    100% {
+        -webkit-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+        -ms-transform: scale(1.1)
+    }
+}
+
+body{
+    /*background: #56b4ab;*/
+}
+.loader,
+.loader:before,
+.loader:after {
+    background: #FFF;
+    /*
+    * load1：执行的动画名
+    * 1s：执行一秒
+    * infinite：执行无限次
+    * ease-in-out：动画以低速开始和结束
+    */
+    animation: load1 1s infinite ease-in-out;
+    width: 1em;
+    height: 2.5em;
+}
+.loader:before,
+.loader:after {
+    position: absolute;
+    top: 0;
+    content: '';
+}
+.loader:before {
+    left: -1.5em;
+}
+.loader {
+    text-indent: -9999em;
+    /*margin: 40% auto;*/
+    position: relative;
+    font-size: 11px;
+    /* 延时0.16s */
+    animation-delay: 0.16s;
+
+    align-items: center;
+    justify-content: center;
+    /*top: 50%;*/
+    /*left: 50%;*/
+}
+.loader:after {
+    left: 1.5em;
+    /* 延时0.32s */
+    animation-delay: 0.32s;
+}
+@keyframes load1 {
+    0%,
+    80%,
+    100% {
+        box-shadow: 0 0 #FFF;
+        height: 2.5em;
+    }
+    40% {
+        /* 实现上部拉伸 */
+        box-shadow: 0 -1.5em #ffffff;
+        /* 实现下部拉伸 */
+        height: 3em;
+    }
+}
+
+
+.main img{width: auto;}
+html{margin: 0 0 100px 0;}
+.a2Box .ftitle{font-size: 14px;color: red;}
+.a2Box .ftitle span{font-weight: bold;font-size: 15px;}
+.a2-content .a2Box h1{font-size: 30px!important;}
+.rightImg img{
+    width: 250px;
+}
+.jd-box img{width: 100%!important;}
+.mian img{
+    width: auto;
+}
+.a4-content .list-unstyled .media img{
+    width: 50px;
+    height: 50px;
+    border-radius: 100%!important;
+    object-fit: cover;
+}
+.main{
+    padding: 0!important;
+}
+.bg-body{
+    padding: 0 10px!important;
+}
+.a1-content .list-txt li span,.a3-content .media-body p{
+    font-size: 18px;
+}
+.money-nub{
+    font-weight: bold;
+}
+.Great .contner,.a4-content .list-unstyled .media-body{
+    font-size: 16px;
+}
+.title-h2 img{padding: 15px 0;}
+
+.ContenTxt span{color:#f35700;font-weight: bold;}
+.bg-body {background:linear-gradient(#fee600,#fef26a)
+
+}
+.a2-content .a2Box{background-color: #fff268;}
+.a2-content .a2Box h1,.jump-txt{color: #f35700;}
+.a1-content .list-txt li span,h3{color: #f35700;}
+.a1-content .list-txt li span{border: 1px solid #f35700;}
+.a1-content .list-txt li::before{background-color: #f35700;}
+.a1-content h2{text-shadow: 0 1px 5px #2e2e2b;}
+.a1-content .money-bg{background: linear-gradient(to right,#ffffff,#fff159);}
+.task{display: flex;
+    align-items: center;
+    padding: 0.67rem 0;}
+.task .icon {
+    width: 60px;
+    height: 60px;
+}
+.task .icon img {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.27rem;
+}
+.task .content {
+    flex: 1;
+    font-size: 16px;
+    color: #000;
+    font-weight: 500;
+}
+.task .content .icon-phone {
+    display: inline-block;
+    width: 20px;
+    height:20px;
+    background: url(../image/218f4b31bc4eba5e5d9b31bae7c0ea74.png) no-repeat 50%;
+    background-size: 100%;
+    vertical-align: middle;
+}
+.tasks .task .reward {
+    width: 80px;
+    height: 30px;
+    background: linear-gradient(134deg,#ff6f32,#ff8310);
+    text-align: center;
+    border-radius: 0.16rem;
+    font-size: 18px;
+    color: #fff;
+    font-weight: 500;
+    line-height: 30px;
+}
+.tasks .task .reward .coin {
+    display: inline-block;
+    margin-right: 0.11rem;
+    vertical-align: sub;
+    width: 20px;
+    height: 20px;
+    bottom: 1px;
+    position: relative;
+    background: url(../image/6bccf9c2a754ecc95d6ab413dd428b6e.png) no-repeat 50%;
+    background-size: 100%;
+}
+@media (max-width: 768px) {
+    .rightImg img{    width: 70vw;
+        right: 0;}
+}

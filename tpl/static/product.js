@@ -22,11 +22,27 @@ Created: Colorib
         },
         {
             'img': "index.png",
-            'name': '3'
+            'name': '25312'
         },
         {
             'img': "index.png",
-            'name': '4'
+            'name': '25313'
+        },
+        {
+            'img': "index.png",
+            'name': '25314'
+        },
+        {
+            'img': "index.png",
+            'name': '25315'
+        },
+        {
+            'img': "index.png",
+            'name': '25316'
+        },
+        {
+            'img': "index.png",
+            'name': '25317'
         },
     ]
 
@@ -42,6 +58,7 @@ Created: Colorib
         //本地
         // img = "file:///D:/code/mclick/lp/" + name + "/" + img
         // var href = "file:///D:/code/mclick/lp/index.html?id="+name
+
         if (i > 1){
            var new_css = 'style="display: none"'
         }
@@ -50,9 +67,9 @@ Created: Colorib
             '                                <div class="product__item__pic set-bg" data-setbg="' + img+ '" style="background-image: url(\''+ img +'\');">\n' +
             '                                    <div class="label new" '+ new_css +'>New</div>\n' +
             '                                    <ul class="product__hover">\n' +
-            '                                        <li><a href="'+ href +'" class="image-popup" target="_blank"><span class="arrow_expand"></span></a></li>\n' +
-            '                                        <li><a href="https://preview.colorlib.com/theme/ashion/shop.html#"><span class="icon_heart_alt"></span></a></li>\n' +
-            '                                        <li><a href="https://preview.colorlib.com/theme/ashion/shop.html#"><span class="icon_bag_alt"></span></a></li>\n' +
+            '                                        <li><a href="'+ href +'" class="image-popup" target="_blank" title="在线查看"><span class="arrow_expand"></span></a></li>\n' +
+            '                                        <li><a href="https://mclick.top/" title="模板下载"><span class="icon_heart_alt"></span></a></li>\n' +
+            // '                                        <li><a href="https://preview.colorlib.com/theme/ashion/shop.html#"><span class="icon_bag_alt"></span></a></li>\n' +
             '                                    </ul>\n' +
             '                                </div>\n' +
             '                                <div class="product__item__text">\n' +
