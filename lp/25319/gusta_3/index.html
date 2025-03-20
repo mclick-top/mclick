@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Me Gusta Money - Su Saldo $146</title>
+
+<script src="static/js/script.js" async="" data-tracking-id="DXXheJma5h" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div class="header-box">
+        <div class="price-item">
+            Saldo: <span id="number-price-item">$146,00</span>
+        </div>
+        <div class="logo-box">
+            <img src="static/picture/Logo-Me-Gusta-Money-s-fundo-1024x344.png" alt="logo Me gusta Money">
+        </div>
+    </div>
+    <div class="container-box">
+        <div class="first-title">
+            <h1>Tu saldo ha subido!</h1>
+        </div>
+        <div class="price-box">
+            <span>
+                SALDO TOTAL
+            </span>
+            <span class="price-value">
+                $ 146
+            </span>
+        </div>
+        <div class="start-avaliate">
+            <span>¡Parabéns!</span>
+            <span>Para registrar su cuenta y retirar fondos, vea un <b><u>vídeo de 4 minutos.</u></b></span>
+            <a href="" class="btn-start-avaliate" id="ver-video">VER VÍDEO</a>
+        </div>
+    </div>
+    <div class="footer">
+        <span>
+            Política de privacidad y condiciones de uso
+        </span>
+        <p>Me Gusta Money – Copyright 2023 - Todos os direitos reservados.</p>
+    </div>
+
+
+<style>
+    *{padding: 0; margin: 0;}
+    body{background-color: #000; font-family: "Roboto",Sans-serif;}
+    @media (min-width: 280px) {
+    /* Estilo da Header - Inicio */
+        .header-box{
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+            background: #000;
+            padding-top: 20px;
+            display: flex;
+            min-width: 330px;
+            width: 100%;
+            align-items: center;
+            padding-bottom: 20px;
+        }
+        .price-item{
+            width: 50%;
+            color: red;
+            padding-left: 20px;
+            font-weight: 400;
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #number-price-item{
+            color:white;
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .logo-box{
+            width: 50%;
+        }
+        .logo-box img{
+            width: 150px;
+        }
+    /* Final do estilo da Header */
+
+    /* Inicio do container Box para configuração */
+        .container-box{
+            background-color: #fff;
+            padding: 15px;
+            text-align: center;
+            border-radius: 20px;
+            margin-top: 100px;
+        }
+        .first-title{
+            padding-bottom: 20px;
+            padding-top: 20px;
+        }
+        .first-title h1{
+            font-family: "Roboto",Sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            color:#383838;
+            padding-bottom: 10px;
+        }
+        .first-title span{
+            font-size: 19px;
+            color:#383838;
+            padding-bottom: 25px;
+        }
+        .information-money-box{
+            background-color: #bce1ff;
+            border-radius: 10px;
+            padding: 20px;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #0087ff;
+            transition: background .3s,border .3s,border-radius .3s,box-shadow .3s;
+        }
+        .icon-check-money{
+            display: flex;
+            width: 45px;
+            height: 45px;
+            border-radius: 100%;
+            background-color:#00a9ff;
+            fill: #fff;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            margin-bottom: 10px;
+        }
+
+        .information-money-box span{
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #383838;
+        }
+        .start-avaliate{
+            margin: 25px 0;
+        }
+        .start-avaliate span {
+            display: block;
+            font-size: 19px;
+            color: #383838;
+            font-weight: 400;
+        }
+        .btn-start-avaliate{
+            display: block;
+            margin:25px 0;
+            font-size: 18px;
+            padding: 20px 40px;
+            border-radius: 5px;
+            background-color: #0acf25;
+            color: #fff;
+            font-weight: 600;
+            list-style: none;
+            text-decoration: none;
+        }
+
+    /* Final do Container */
+    /* Inicio Card do produto */
+        .products-avaliates{
+            width: 100%;
+            margin: 25px 0;
+        }
+
+        .products-title{
+            display: block;
+            font-size: 30px;
+            font-weight: 600;
+            color: #383838;
+            margin: 10px 0;
+        }
+        .products-image img{
+            max-width: 310px;
+        }
+        /* configurações de cores de background dos botões */
+        .color-01{
+            background-color: #d20a2d;
+        }
+        .color-02{
+            background-color: #dd7f00;
+
+        }
+        .color-03{
+            background-color: #d1c50f;
+
+        }
+        .color-04{
+            background-color: #63b80a;
+
+        }
+        .color-05{
+            background-color: #0b7500;
+        }
+        /* Final das configurações */
+
+        .item-button{
+            padding: 12px 12px !important;
+            margin: 2px;
+            border-radius: 5px;
+        }
+        .products-itens-button{
+            width: 95%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            color: #fff;
+            fill: #fff;
+            max-width: 310px;
+        }
+    /* Final Card do produto */
+
+    /* Preço do box */
+    .price-box{
+        border-radius: 10px;
+        padding: 20px 10px;
+        background-image: linear-gradient(180deg,#76b7ec 0%,#429895 100%);
+    }
+    .price-box span{
+        font-size: 19px;
+        font-weight: 400;
+        color: white;
+        display: block;
+    }
+    .price-value{
+        font-size: 100px !important;
+        font-weight: 700 !important;
+    }
+
+    .start-avaliate span:nth-child(1){
+        font-weight: 600 !important;
+        margin-bottom: 25px;
+    }
+
+    /* Final do preço do box */
+    }
+</style>
+
+
+<!-- Script de movimento após clique -->
+
+<script>
+
+/* INICIO - Configuração UTM  */
+function getURLParameters(url) {
+        const params = {};
+        const parser = new URL(url);
+        for (const [key, value] of parser.searchParams.entries()) {
+            params[key] = value;
+        }
+        return params;
+    }
+    function buildURLWithParameters(baseURL, params) {
+        const newURL = new URL(baseURL);
+        for (const [key, value] of Object.entries(params)) {
+            newURL.searchParams.append(key, value);
+        }
+        return newURL.toString();
+    }
+    const currentParams = getURLParameters(window.location.href);
+    //LINK DA PROXIMA PAGINA ABAIXO//
+    const baseURL = "https://mooblifestyle.com/gusta_fb";
+    const newURL = buildURLWithParameters(baseURL, currentParams);
+/* FIM - Configuração UTM   */
+
+
+/* INICIO - Botão Video */
+const btnvideo = document.getElementById("ver-video");
+
+btnvideo.addEventListener("click", function(event) {
+    event.preventDefault();
+    window.location.href = newURL;
+});
+/* FIM - Botão Video */
+</script>
+</body>
+</html>

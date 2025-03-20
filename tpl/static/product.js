@@ -44,6 +44,22 @@ Created: Colorib
             'img': "index.png",
             'name': '25317'
         },
+        {
+            'img': "index.png",
+            'name': '25318'
+        },
+        {
+            'img': "index.png",
+            'name': '25319'
+        },
+        {
+            'img': "index.png",
+            'name': '25320'
+        },
+        {
+            'img': "index.png",
+            'name': '25321'
+        },
     ]
 
     for(var i in obj){
