@@ -68,12 +68,12 @@ Created: Colorib
             '                                    <div class="label new" '+ new_css +'>New</div>\n' +
             '                                    <ul class="product__hover">\n' +
             '                                        <li><a href="'+ href +'" class="image-popup" target="_blank" title="在线查看"><span class="arrow_expand"></span></a></li>\n' +
-            '                                        <li><a href="https://mclick.top/" title="模板下载"><span class="icon_heart_alt"></span></a></li>\n' +
+            '                                        <li><a href="https://mclick.top/" target="_blank" title="模板下载"><span class="icon_heart_alt"></span></a></li>\n' +
             // '                                        <li><a href="https://preview.colorlib.com/theme/ashion/shop.html#"><span class="icon_bag_alt"></span></a></li>\n' +
             '                                    </ul>\n' +
             '                                </div>\n' +
             '                                <div class="product__item__text">\n' +
-            '                                    <h6><a href="https://preview.colorlib.com/theme/ashion/shop.html#">No:' + name + '</a></h6>\n' +
+            '                                    <h6><a href="#">No:' + name + '</a></h6>\n' +
             '                                    <div class="rating">\n' +
             '                                        <i class="fa fa-star"></i>\n' +
             '                                        <i class="fa fa-star"></i>\n' +
