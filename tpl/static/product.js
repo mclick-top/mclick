@@ -11,7 +11,7 @@ Created: Colorib
 
 (function ($) {
 
-    var obj = [
+    var objList = [
         {
             'img': "index.png",
             'name': '25310'
@@ -62,6 +62,17 @@ Created: Colorib
         },
     ]
 
+    var url = getParams(window.location.href)
+    var page = 1
+    if(url.hasOwnProperty("page")){
+        page = parseInt(url['page'])
+    }
+    
+    // 每页数量
+    var pernum = 12
+    var obj = []
+    obj = objList.slice((page-1) * pernum, page * pernum);
+
     for(var i in obj){
         var img = obj[i]['img']
 
@@ -105,5 +116,35 @@ Created: Colorib
         $('#product').before(html)
     }
 
-
+    //分页显示
+    var pagenum  = (objList.length % pernum) == 0 ? (objList.length / pernum ) : (objList.length / pernum ) + 1
+    var htmlpage = ""
+    for(var n=1; n<=pagenum; n++){
+        if(n>3){
+            break
+        }
+        var ac = ""
+        if(page === n){
+            ac = "class='pageactive'"
+        }
+        htmlpage += '<a href="?page='+n+'" '+ ac +'>'+n+'</a>'
+    }
+    if(pagenum > 3){
+        var ac = ""
+        if(page > 3){
+            ac = "class='pageactive'"
+        }
+        var pagenext = page + 1
+        htmlpage += '<a href="?page='+pagenext+'"'+ ac +'><i class="fa fa-angle-right"></i></a>'
+    }
+    $("#pagelist").append(htmlpage)
 })(jQuery);
+
+function getParams(url) {
+    const pattern = /(\w+)=(\w+)/gi;
+    const params = {};
+    url.replace(pattern, function(match, key, value) {
+        params[key] = value;
+    });
+    return params;
+}
