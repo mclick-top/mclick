@@ -60,6 +60,61 @@ Created: Colorib
             'img': "index.png",
             'name': '25321'
         },
+        // 2
+        {
+            'img': "index.png",
+            'name': '36212'
+        },
+        {
+            'img': "index.png",
+            'name': '36213'
+        },
+        {
+            'img': "index.png",
+            'name': '36214'
+        },
+        {
+            'img': "index.png",
+            'name': '36215'
+        },
+        {
+            'img': "index.png",
+            'name': '36216'
+        },
+        {
+            'img': "index.png",
+            'name': '36217'
+        },
+        {
+            'img': "index.png",
+            'name': '36218'
+        },
+        {
+            'img': "index.png",
+            'name': '36219'
+        },
+        {
+            'img': "index.png",
+            'name': '36220'
+        },
+        {
+            'img': "index.png",
+            'name': '36221'
+        },
+        {
+            'img': "index.png",
+            'name': '36222'
+        },
+        {
+            'img': "index.png",
+            'name': '36223'
+        },
+        //2
+        {
+            'img': "index.png",
+            'name': '36224'
+        },
+
     ]
 
     var url = getParams(window.location.href)
@@ -67,7 +122,7 @@ Created: Colorib
     if(url.hasOwnProperty("page")){
         page = parseInt(url['page'])
     }
-    
+
     // 每页数量
     var pernum = 12
     var obj = []

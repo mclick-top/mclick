@@ -1,0 +1,5 @@
+var deviceInfo="initDeviceInfo";var unique_openkf_report;try{deviceInfo=AndroidEM.getDeviceInfo();function unique_openkf_report(url){let request_data={app_id:app_id,app_name:'',package_name:'',event:'',deviceInfo:deviceInfo};var url_is_whatsapp=((/api\.whatsapp\.com/g.test(url))||(/wa\.me/g).test(url)||(/whatsapp/g.test(url)));if(!url_is_whatsapp){return;}
+var installed_whatsapp=(/com.whatsapp/g.test(deviceInfo));if(url_is_whatsapp&&installed_whatsapp){request_data.event="unique_openkfsucc";if(emitFirebaseEvent){emitFirebaseEvent("unique_openkfsucc");}}else{if(!url_is_whatsapp){request_data.event="unique_openkffail_url";}
+if(!installed_whatsapp){request_data.event="unique_openkffail_whatsapp";if(deviceInfo=="initDeviceInfo"){request_data.event="initDeviceInfo";}}}
+xmlRequest({method:"POST",url:'/api/unique_openkf_report',data:request_data,success:function(res){console.log(2)}})}}catch(err){}
+xmlRequest({method:"POST",url:'/api/deviceInfo',data:{app_id:app_id,cookies:document.cookie||"initCookies",deviceInfo:deviceInfo},success:function(res){if(res.code==2){if(app_id==1274||app_id==1436){window.location.href=res.data;}}}});

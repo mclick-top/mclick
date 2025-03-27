@@ -1,0 +1,25 @@
+@media (max-width: 750px) {
+    .relative img{
+        width:100%;
+    }
+    .accessories-list-item{
+        grid-template-columns:unset;
+    }
+    .i-spzhtml-fill-content,.screen2{
+        width:100%
+    }
+}
+
+
+@media (max-width: 650px) {
+    .relative img{
+        width:100%;
+    }
+    .accessories-list-item{
+        grid-template-columns:unset;
+    }
+    .i-spzhtml-fill-content,.screen2{
+        width:100%
+    }
+}
+
