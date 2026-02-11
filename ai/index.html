@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>AI 工业 SOP 视觉监控系统</title>
+  <script src="./lib/pose.js" crossorigin="anonymous"></script>
+  <script src="./lib/hands.js" crossorigin="anonymous"></script>
+  <script src="./lib/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="./lib/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="./lib/echarts.min.js"></script>
+  
+  <style>
+    :root {
+      --bg-color: #0a0c10;
+      --panel-bg: #ffffff;
+      --panel-text: #333333;
+      --accent-color: #00b894;
+      --error-color: #d63031;
+      --step-active: #0984e3;
+      --step-todo: #dfe6e9;
+    }
+    body { margin: 0; padding: 0; background: #f0f2f5; color: var(--panel-text); font-family: "Microsoft YaHei", sans-serif; overflow: hidden; display: flex; height: 100vh; }
+    #app { display: flex; width: 100%; height: 100%; }
+    #main-view { flex: 3; display: flex; flex-direction: column; padding: 15px; background: #000; }
+    .video-container { position: relative; flex: 1; border-radius: 8px; overflow: hidden; display: flex; justify-content: center; align-items: center; border: 1px solid #333; }
+    .output_canvas { width: 100%; height: 100%; object-fit: cover; }
+    #alert-overlay { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: var(--error-color); color: white; padding: 12px 40px; border-radius: 4px; font-size: 24px; font-weight: bold; z-index: 10; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+
+    .bottom-stats { height: 100px; display: flex; gap: 15px; margin-top: 15px; }
+    .stat-item { flex: 1; background: #1c1c1c; border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; }
+    .stat-item .label { font-size: 12px; color: #aaa; margin-bottom: 5px; }
+    .stat-item .value { font-size: 32px; font-weight: bold; }
+    .stat-item.ok .value { color: var(--accent-color); }
+    .stat-item.err .value { color: var(--error-color); }
+
+    #side-panel { flex: 1.2; min-width: 420px; background: var(--panel-bg); padding: 20px; display: flex; flex-direction: column; box-shadow: -2px 0 10px rgba(0,0,0,0.05); }
+    .gauge-box { display: flex; flex-direction: column; align-items: center; padding-bottom: 10px; }
+    .gauge-title { color: #666; font-size: 16px; margin-top: -35px; font-weight: bold; }
+
+    .sop-container { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--step-active); }
+    .sop-header { font-size: 14px; font-weight: bold; color: #636e72; margin-bottom: 10px; display: flex; justify-content: space-between; }
+    .sop-steps { display: flex; gap: 8px; }
+    .step-item { flex: 1; height: 35px; background: var(--step-todo); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; transition: all 0.3s; color: #636e72; }
+    .step-item.active { background: var(--step-active); color: #fff; font-weight: bold; transform: scale(1.05); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    .step-item.done { background: var(--accent-color); color: #fff; }
+
+    .history-container { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .history-header-main { display: flex; align-items: center; gap: 8px; margin-bottom: 15px; }
+    .dot { width: 6px; height: 6px; background: var(--accent-color); border-radius: 50%; }
+    .history-container h3 { font-size: 15px; color: #333; margin: 0; }
+    .list-header { display: flex; padding: 8px 0; font-size: 13px; color: #999; border-bottom: 1px solid #eee; }
+    
+    .history-list { flex: 1; overflow-y: auto; }
+    .history-row { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px dashed #eee; }
+    .progress-wrapper { flex: 1; height: 30px; background: #dfe6e9; border-radius: 4px; position: relative; margin-right: 15px; overflow: hidden; }
+    .progress-bar { height: 100%; transition: width 0.3s; }
+    .progress-text { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-weight: bold; color: #2d3436; font-size: 13px; text-shadow: 0 0 2px rgba(255,255,255,0.8); }
+    
+    .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; color: #fff; text-align: center; min-width: 40px; }
+    .status-badge.ok { background: var(--accent-color); }
+    .status-badge.err { background: var(--error-color); }
+
+    #loading { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; color: #fff; text-align: center; }
+  </style>
+</head>
+
+<body>
+  <div id="loading">
+    <div style="font-size: 24px; color: #00ffcc; margin-bottom: 20px;">AI 检测启动中...</div>
+    <div id="loading-status">正在初始化本地模型...</div>
+    <div id="log-status">等待初始化...</div>
+  </div>
+
+  <div id="app">
+    <div id="main-view">
+      <div class="video-container">
+        <video class="input_video" style="display:none"></video>
+        <canvas class="output_canvas" width="640" height="480"></canvas>
+        <div id="alert-overlay">警告：SOP 操作超时！</div>
+      </div>
+      <div class="bottom-stats">
+        <div class="stat-item">
+          <div class="label">检测总数</div><div class="value" id="total-count">0</div>
+        </div>
+        <div class="stat-item ok">
+          <div class="label">正确作业</div><div class="value" id="correct-count">0</div>
+        </div>
+        <div class="stat-item err">
+            <div class="label">错误作业</div><div class="value" id="error-count">0</div>
+        </div>
+        <div class="stat-item">
+            <div class="label">错误检查</div><div class="value" id="error-check-count">0</div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="side-panel">
+      <div class="gauge-box">
+        <div id="gauge-chart" style="width: 320px; height: 220px;"></div>
+        <div class="gauge-title">一致性评分</div>
+      </div>
+      <div class="sop-container">
+        <div class="sop-header"><span>标准作业程序 (SOP)</span><span id="sop-status" style="color:var(--step-active)">待开始</span></div>
+        <div class="sop-steps">
+          <div class="step-item" id="step-0">L-1指</div>
+          <div class="step-item" id="step-1">L-2指</div>
+          <div class="step-item" id="step-2">L-3指</div>
+          <div class="step-item" id="step-3">R-5指</div>
+        </div>
+      </div>
+      <div class="history-container">
+        <div class="history-header-main"><div class="dot"></div><h3>节拍检测结果</h3></div>
+        <div class="list-header"><div style="width:50px">序号</div><div style="flex:1">时长记录</div><div style="width:60px; text-align:right">状态</div></div>
+        <div id="history-list" class="history-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    const logEl = document.getElementById('log-status');
+    const loadingScreen = document.getElementById('loading');
+    const canvasElement = document.querySelector('.output_canvas');
+    const canvasCtx = canvasElement.getContext('2d');
+    const videoElement = document.querySelector('.input_video');
+
+    function log(msg) { logEl.innerText = msg; console.log(msg); }
+
+    let stats = { total: 0, correct: 0, error: 0, checkError: 0, history: [] };
+    let historyCounter = 0;
+    
+    let currentSopStep = 0; 
+    let stepStartTime = 0;
+    let stableFrames = 0;
+    let hasCheckError = false; // 新增：错误锁定标志位
+    
+    const STABLE_THRESHOLD = 15;
+    const SOP_TIMEOUT = 10000;
+    const ROI = { x: 200, y: 120, w: 240, h: 240 };
+    const stepNames = ["L-1指", "L-2指", "L-3指", "R-5指"];
+
+    const gaugeChart = echarts.init(document.getElementById('gauge-chart'));
+
+    const pose = new Pose({locateFile: (f) => `./lib/${f}`});
+    const hands = new Hands({locateFile: (f) => `./lib/${f}`});
+
+    pose.setOptions({ modelComplexity: 0, minDetectionConfidence: 0.5 });
+    hands.setOptions({ modelComplexity: 0, maxNumHands: 2, minDetectionConfidence: 0.7, minTrackingConfidence: 0.7 });
+
+    let lastHandResults = null;
+    let lastPoseResults = null;
+    
+    pose.onResults(r => { lastPoseResults = r; });
+    hands.onResults(r => {
+      lastHandResults = r;
+      if (loadingScreen.style.display !== 'none') loadingScreen.style.display = 'none';
+      render();
+    });
+
+    function countFingersInROI(landmarks) {
+      const tips = [8, 12, 16, 20, 4];
+      let count = 0;
+      tips.forEach(idx => {
+        const pt = landmarks[idx];
+        const tx = canvasElement.width - (pt.x * canvasElement.width);
+        const ty = pt.y * canvasElement.height;
+        if (tx > ROI.x && tx < ROI.x + ROI.w && ty > ROI.y && ty < ROI.y + ROI.h) count++;
+      });
+      return count;
+    }
+
+    function updateSopUI() {
+      for(let i=0; i<4; i++) {
+        const el = document.getElementById(`step-${i}`);
+        el.className = 'step-item';
+        if (i < currentSopStep) el.classList.add('done');
+        if (i === currentSopStep) el.classList.add('active');
+      }
+      document.getElementById('sop-status').innerText = currentSopStep === 0 ? '待开始' : `步骤 ${currentSopStep + 1}/4`;
+    }
+
+    function render() {
+      canvasCtx.save();
+      canvasCtx.translate(canvasElement.width, 0);
+      canvasCtx.scale(-1, 1);
+      canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+      
+      const inputImage = (lastHandResults && lastHandResults.image) || (lastPoseResults && lastPoseResults.image);
+      if(inputImage) canvasCtx.drawImage(inputImage, 0, 0, canvasElement.width, canvasElement.height);
+
+      if (currentSopStep > 0 && (performance.now() - stepStartTime > SOP_TIMEOUT)) {
+          handleSopError('单步超时');
+      }
+
+      let lFingers = 0, rFingers = 0;
+      if (lastHandResults && lastHandResults.multiHandLandmarks) {
+        lastHandResults.multiHandLandmarks.forEach((landmarks, index) => {
+          let label = lastHandResults.multiHandedness[index].label;
+          const fCount = countFingersInROI(landmarks);
+          if (label === 'Right') lFingers = fCount; else rFingers = fCount;
+          drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: label === 'Right' ? '#0984e3' : '#00ffcc', lineWidth: 2});
+          
+          canvasCtx.save();
+          canvasCtx.scale(-1, 1);
+          canvasCtx.fillStyle = "yellow";
+          canvasCtx.font = "16px Arial";
+          const tx_debug = -(canvasElement.width - landmarks[0].x * canvasElement.width);
+          const ty_debug = landmarks[0].y * canvasElement.height;
+          canvasCtx.fillText(`${label === 'Right'?'左手':'右手'} ${fCount}指`, tx_debug, ty_debug);
+          canvasCtx.restore();
+        });
+      }
+
+      let isStepMatch = false;
+      const targetFingers = [1, 2, 3, 5][currentSopStep];
+      const currentFingers = currentSopStep < 3 ? lFingers : rFingers;
+
+      if (currentFingers === targetFingers) {
+        isStepMatch = true;
+      }
+
+      canvasCtx.strokeStyle = isStepMatch ? "#00ffcc" : "#ff3366";
+      canvasCtx.lineWidth = 4;
+      canvasCtx.setLineDash([10, 5]);
+      canvasCtx.strokeRect(ROI.x, ROI.y, ROI.w, ROI.h);
+      canvasCtx.setLineDash([]);
+
+      if (isStepMatch) {
+        stableFrames++;
+        hasCheckError = false; // 匹配正确，清除错误状态
+        if (stableFrames >= STABLE_THRESHOLD) {
+          const now = performance.now();
+          const dur = currentSopStep === 0 ? 0.1 : (now - stepStartTime) / 1000;
+          if (currentSopStep === 0) stats.total++;
+          addHistoryRow({ stepName: stepNames[currentSopStep], duration: dur, error: false });
+          if (currentSopStep === 3) { stats.correct++; currentSopStep = 0; } else { currentSopStep++; }
+          stepStartTime = now;
+          stableFrames = 0;
+          updateStatsUI();
+        }
+      } else {
+        stableFrames = 0;
+        // 错误检查计数修正：只有在“非 SOP 进行中”且“检测到多余手指”时，且“尚未锁定”时才加 1
+        if (currentSopStep === 0 && (lFingers > 1 || rFingers > 0)) {
+            if (!hasCheckError) {
+                stats.checkError++;
+                updateStatsUI();
+                hasCheckError = true; // 锁定，直到手离开或状态改变
+            }
+        } else {
+            hasCheckError = false;
+        }
+      }
+
+      if (lastPoseResults && lastPoseResults.poseLandmarks) {
+        drawConnectors(canvasCtx, lastPoseResults.poseLandmarks, POSE_CONNECTIONS, {color: '#ffffff22', lineWidth: 1});
+      }
+
+      updateSopUI();
+      canvasCtx.restore();
+    }
+
+    function handleSopError(reason) {
+        stats.error++;
+        addHistoryRow({ stepName: stepNames[currentSopStep], duration: 0, error: true, reason: reason });
+        currentSopStep = 0;
+        stableFrames = 0;
+        hasCheckError = false;
+        updateStatsUI();
+        document.getElementById('alert-overlay').innerText = `警告: ${reason}!`;
+        document.getElementById('alert-overlay').style.display = 'block';
+        setTimeout(() => document.getElementById('alert-overlay').style.display = 'none', 2000);
+    }
+
+    function updateStatsUI(){
+        document.getElementById('total-count').innerText = stats.total;
+        document.getElementById('correct-count').innerText = stats.correct;
+        document.getElementById('error-count').innerText = stats.error;
+        document.getElementById('error-check-count').innerText = stats.checkError;
+    }
+
+    function addHistoryRow(item) {
+        historyCounter++;
+        const listEl = document.getElementById('history-list');
+        const row = document.createElement('div');
+        row.className = 'history-row';
+        if (item.error) {
+            row.innerHTML = `<div style="width:50px">${historyCounter}</div><div class="progress-wrapper"><span style="color: var(--error-color); padding-left: 10px; font-weight: bold;">${item.stepName} - ${item.reason}</span></div><div style="width:60px; text-align:right"><span class="status-badge err">FAIL</span></div>`;
+        } else {
+            const progressWidth = Math.min((item.duration / 10) * 100, 100);
+            row.innerHTML = `<div style="width:50px">${historyCounter}</div><div class="progress-wrapper"><div class="progress-bar" style="width: ${progressWidth}%; background: var(--accent-color)"></div><span class="progress-text">${item.stepName}: ${item.duration.toFixed(1)}s</span></div><div style="width:60px; text-align:right"><span class="status-badge ok">OK</span></div>`;
+        }
+        listEl.prepend(row);
+        updateGauge();
+    }
+
+    function updateGauge() {
+      const score = stats.total > 0 ? (stats.correct / stats.total * 100) : 100;
+      gaugeChart.setOption({ series: [{ type: 'gauge', startAngle: 180, endAngle: 0, min: 0, max: 100, progress: { show: true, width: 22, itemStyle: { color: '#00b894' } }, axisLine: { lineStyle: { width: 22, color: [[1, '#eee']] } }, axisTick: { show: false }, splitLine: { show: false }, axisLabel: { show: false }, pointer: { show: false }, detail: { valueAnimation: true, fontSize: 50, offsetCenter: [0, -10], formatter: '{value}', color: '#333' }, data: [{ value: score.toFixed(0) }] }] });
+    }
+    updateGauge();
+
+    const camera = new Camera(videoElement, {
+      onFrame: async () => {
+        if (videoElement.readyState < 2) return;
+        try {
+          await pose.send({image: videoElement});
+          await hands.send({image: videoElement});
+        } catch (e) { log("AI 发送错误: " + e.message); }
+      },
+      width: 640, height: 480
+    });
+    camera.start().catch(err => log("摄像头启动失败: " + err));
+  </script>
+</body>
+</html>
